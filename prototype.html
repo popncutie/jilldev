@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+	<head>
+		<title>#jilldev</title>
+		
+		<style>
+			* {padding: 0; margin: 0;}		
+		</style>
+		
+		<script src="./pixi.js/bin/pixi.js"></script>
+		
+		<script>
+			var renderer, stage = null;
+			
+			function init() {
+				// based on info and code from https://github.com/kittykatattack/learningPixi
+				
+				//Create the renderer
+				renderer = PIXI.autoDetectRenderer(256, 256);
+				renderer.view.style.position = "absolute"
+				renderer.view.style.display = "block";
+				renderer.autoResize = true;
+				renderer.resize(window.innerWidth, window.innerHeight);
+
+				//Add the canvas to the HTML document
+				document.body.appendChild(renderer.view);
+
+				//Create a container object called the `stage`
+				stage = new PIXI.Container();
+				
+				// Set a BG color
+				renderer.backgroundColor = 0x061639;
+				
+				// Load resources
+				PIXI.loader
+					.add("orb-pink.png")
+					.load(onLoadResources);
+				
+				//Tell the `renderer` to `render` the `stage`
+				renderer.render(stage);
+			}
+			
+			function onLoadResources() {
+				// Create a sprite with the test texture, add it to the stage, render
+				var testSprite = new PIXI.Sprite(
+					PIXI.loader.resources["orb-pink.png"].texture
+				);
+				
+				stage.addChild(testSprite);
+				
+				renderer.render(stage);
+			}
+		</script>
+	</head>
+	<body onload="init();">
+	</body>
+</html>
