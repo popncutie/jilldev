@@ -1,3 +1,6 @@
 [submodule "pixi.js"]
 	path = pixi.js
 	url = https://github.com/pixijs/pixi.js.git
+[submodule "tink"]
+	path = tink
+	url = https://github.com/kittykatattack/tink.git
