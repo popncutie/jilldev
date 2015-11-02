@@ -9,10 +9,13 @@
 		</style>
 		
 		<script src="./pixi.js/bin/pixi.js"></script>
+		<script src="./tink/bin/tink.js"></script>
+
 		
 		<script>
 			var renderer,
 				stage,
+				tink,
 				testSprite;
 			
 			function init() {
@@ -51,12 +54,24 @@
 				
 				stage.addChild(testSprite);
 				
+				tink = new Tink(PIXI, renderer.view);
+				
+				tink.makeInteractive(testSprite);
+				
+				testSprite.press = function() {
+					console.log('test');
+					testSprite.tint = Math.random()*0xFFFFFF;
+				}
+				
 				gameLoop();
 			}
 			
 			function gameLoop() {
 				//Loop this function at 60 frames per second
 			  	requestAnimationFrame(gameLoop);
+			  	
+			  	// update Tink
+			  	tink.update();
 			  	
 			  	// adjust for window size
 			  	if (renderer.width != window.innerWidth || renderer.height != window.Height) {
