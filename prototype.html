@@ -11,7 +11,9 @@
 		<script src="./pixi.js/bin/pixi.js"></script>
 		
 		<script>
-			var renderer, stage = null;
+			var renderer,
+				stage,
+				testSprite;
 			
 			function init() {
 				// based on info and code from https://github.com/kittykatattack/learningPixi
@@ -34,7 +36,7 @@
 				
 				// Load resources
 				PIXI.loader
-					.add("orb-pink.png")
+					.add("orb-pink", "res/orb-pink.png")
 					.load(onLoadResources);
 				
 				//Tell the `renderer` to `render` the `stage`
@@ -43,12 +45,35 @@
 			
 			function onLoadResources() {
 				// Create a sprite with the test texture, add it to the stage, render
-				var testSprite = new PIXI.Sprite(
-					PIXI.loader.resources["orb-pink.png"].texture
+				testSprite = new PIXI.Sprite(
+					PIXI.loader.resources["orb-pink"].texture
 				);
 				
 				stage.addChild(testSprite);
 				
+				gameLoop();
+			}
+			
+			function gameLoop() {
+				//Loop this function at 60 frames per second
+			  	requestAnimationFrame(gameLoop);
+			  	
+			  	// adjust for window size
+			  	if (renderer.width != window.innerWidth || renderer.height != window.Height) {
+					renderer.resize(window.innerWidth, window.innerHeight);
+				}
+							  	
+			  	// move the test sprite nowhere in particular
+			  	testSprite.x += 5-Math.random()*10;
+			  	testSprite.y += 5-Math.random()*10;
+			  	
+			  	if (testSprite.x  < -testSprite.width/2) {
+			  		testSprite.x = -testSprite.width/2;
+			  	}
+			  	if (testSprite.y  < -testSprite.height/2) {
+			  		testSprite.y = -testSprite.height/2;
+			  	}
+			  					
 				renderer.render(stage);
 			}
 		</script>
