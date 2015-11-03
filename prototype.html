@@ -16,7 +16,11 @@
 			var renderer,
 				stage,
 				tink,
-				testSprite;
+				testSprite,
+				tiles;
+				
+			var gridWidth = gridHeight = 8;
+			var gridOffsetX = gridOffsetY = 30;
 			
 			function init() {
 				// based on info and code from https://github.com/kittykatattack/learningPixi
@@ -40,6 +44,10 @@
 				// Load resources
 				PIXI.loader
 					.add("orb-pink", "res/orb-pink.png")
+					.add("orb-pink-small", "res/orb-pink-small.png")
+					.add("tile-blank-small", "res/tile-blank-small.png")
+					.add("tile-pedestal-small", "res/tile-pedestal-small.png")
+					.add("tile-pedestal-orb-small", "res/tile-pedestal-orb-small.png")
 					.load(onLoadResources);
 				
 				//Tell the `renderer` to `render` the `stage`
@@ -52,8 +60,6 @@
 					PIXI.loader.resources["orb-pink"].texture
 				);
 				
-				stage.addChild(testSprite);
-				
 				tink = new Tink(PIXI, renderer.view);
 				
 				tink.makeInteractive(testSprite);
@@ -62,6 +68,35 @@
 					console.log('test');
 					testSprite.tint = Math.random()*0xFFFFFF;
 				}
+				
+				tiles = [];
+				for (var row = 0; row < gridHeight; row++) {
+					var newRow = [];
+					
+					for (var col = 0; col < gridWidth; col++) {
+						var textureName;
+						var rand = Math.random();
+						if (rand > 0.30) {
+							textureName = "tile-blank-small";
+						} else if (rand > 0.05) {
+							textureName = "tile-pedestal-orb-small"
+						} else {
+							textureName = "tile-pedestal-small"
+						}
+						
+						var newSprite = new PIXI.Sprite(
+							PIXI.loader.resources[textureName].texture
+						);
+						newRow.push(newSprite);
+						newSprite.x = gridOffsetX + col * newSprite.width;
+						newSprite.y = gridOffsetY + row * newSprite.height;
+						stage.addChild(newSprite);
+					}
+					
+					tiles.push(newRow);
+				}
+				
+				//stage.addChild(testSprite);
 				
 				gameLoop();
 			}
